@@ -1,0 +1,8 @@
+[submodule "flatpak/repo/--force"]
+	path = flatpak/repo/--force
+	url = git@github-personal:alexwarddev1230/xbPlayFlatpakRepo.git
+	branch = main
+[submodule "flatpak/repo/repo"]
+	path = flatpak/repo/repo
+	url = git@github-personal:alexwarddev1230/xbPlayFlatpakRepo.git
+	branch = main
