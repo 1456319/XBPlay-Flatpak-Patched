@@ -327,6 +327,10 @@ const createMainWindow = async (isPcPlay = false) => {
                               window.dispatchEvent(new CustomEvent("ui_language_update", {
                               detail: {data: data},
                             }));
+                        } else if (type === 'gamepad') {
+                            window.dispatchEvent(new CustomEvent("gamepad", { detail: data }));
+                        } else if (type === 'gamepad_rumble') {
+                            window.dispatchEvent(new CustomEvent("gamepad_rumble", { detail: data }));
                         } else {
                             console.log('Unknown linux message sent', type, data);
                         }
@@ -1021,10 +1025,12 @@ function startXCloud(event, args) {
 
     steamCustomClient.setRichPresenceXCloudGame(titleToDisplay)
 
-    if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
-        mainWindow.loadURL(`${HOSTNAME}/android_stream.html?isSteam=1`)
+    if (persistClient.getJSONKey('settings_use_official_web', 'settings_items')) {
+        mainWindow.loadURL('https://www.xbox.com/play');
+    } else if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
+        mainWindow.loadFile('assets/android_stream.html', { query: { isSteam: '1' } })
     } else {
-        mainWindow.loadURL(`${HOSTNAME}/android_stream.html`)
+        mainWindow.loadFile('assets/android_stream.html')
     }
 }
 
@@ -1153,10 +1159,12 @@ async function steamStartXCloud(event, args) {
         console.log('STARTING XCLOUD STREAM')
         steamCustomClient.setRichPresenceXCloudGame(args['title'])
 
-        if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html?isSteam=1`)
+        if (persistClient.getJSONKey('settings_use_official_web', 'settings_items')) {
+            mainWindow.loadURL('https://www.xbox.com/play');
+        } else if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
+            mainWindow.loadFile('assets/android_stream.html', { query: { isSteam: '1' } })
         } else {
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html`)
+            mainWindow.loadFile('assets/android_stream.html')
         }
 
     } else if (response.response === 1){ // clicked add to steam
@@ -1179,10 +1187,12 @@ function startXHome(event, args){
         persistClient.returnXCloudConfig = false
         steamCustomClient.setRichPresenceXHomeGame()
 
-        if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html?isSteam=1`)
+        if (persistClient.getJSONKey('settings_use_official_web', 'settings_items')) {
+            mainWindow.loadURL('https://www.xbox.com/play');
+        } else if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
+            mainWindow.loadFile('assets/android_stream.html', { query: { isSteam: '1' } })
         } else {
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html`)
+            mainWindow.loadFile('assets/android_stream.html')
         }
     } else {
         const options = {
@@ -1207,10 +1217,12 @@ function startGamepadOnly(event, args){
         }
         persistClient.returnXCloudConfig = false
 
-        if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html?controllerOnly=1&isSteam=1`)
+        if (persistClient.getJSONKey('settings_use_official_web', 'settings_items')) {
+            mainWindow.loadURL('https://www.xbox.com/play');
+        } else if (isSteamVersion && steamCustomClient.getIsSteamDeck()){
+            mainWindow.loadFile('assets/android_stream.html', { query: { controllerOnly: '1', isSteam: '1' } })
         } else {
-            mainWindow.loadURL(`${HOSTNAME}/android_stream.html?controllerOnly=1`)
+            mainWindow.loadFile('assets/android_stream.html', { query: { controllerOnly: '1' } })
         }
     } else {
         const options = {
