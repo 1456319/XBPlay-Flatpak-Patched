@@ -323,9 +323,11 @@ module.exports = class SteamArtworkHelper {
         const appIds = await this.getMainShortcutIds() // set artwork for main app
         console.log('Main app shortcut id is', appIds)
 
+        const promises = []
         for (let k = 0; k < appIds.length; k++){
-            await this.saveDefaultArtworkFiles(appIds[k])
+            promises.push(this.saveDefaultArtworkFiles(appIds[k]))
         }
+        await Promise.all(promises)
 
         if(!appIds.length){
             console.log('Unable to find ID for main app')
