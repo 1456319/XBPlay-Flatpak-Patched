@@ -1,1 +1,10 @@
 node_modules/
+android-src/
+.flatpak-builder/
+archives/
+dist/
+xbGameStream-src.zip
+fix_android*
+fix_flatpak_npm.py
+jules_session_*
+flatpak/flatpak-builder-tools
