@@ -199,7 +199,8 @@ const createMainWindow = async (isPcPlay = false) => {
             // sandbox check
             preload: path.join(__dirname, preloadPath),
             devTools: useDev,
-            nodeIntegration: true,
+            nodeIntegration: false,
+            contextIsolation: true,
         },
         // fullscreen: fullscreenMode,
         // titleBarStyle: 'hidden',
@@ -257,6 +258,26 @@ const createMainWindow = async (isPcPlay = false) => {
             oldWindow.close()
             oldWindow = null
         }
+
+        // Bridge events from Main World to Main Process via exposed API (for remote pages)
+        mainWindow.webContents.executeJavaScript(`
+            (function() {
+                const events = [
+                    'login', 'xalTokenUpdateRequest', 'close_app', 'auto_login_enable',
+                    'auto_login_disable', 'settings_items_updated', 'quitGame',
+                    'startXCloud', 'steamStartXCloud', 'pwa_prompt_for_shortcut_creation',
+                    'ui_language_update', 'downloadXCloudArtwork', 'show_gpu_settings',
+                    'save_xcloud_images', 'custom_log'
+                ];
+                events.forEach(name => {
+                    window.addEventListener(name, (e) => {
+                        if (window.electronAPI) {
+                            window.electronAPI.send(name, e.detail);
+                        }
+                    });
+                });
+            })();
+        `);
 
         setZoomLevel()
         const currentURL = mainWindow.webContents.getURL() || ''

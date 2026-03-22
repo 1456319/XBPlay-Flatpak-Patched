@@ -27,7 +27,8 @@ module.exports = class PCPlayIntroWindow extends EventEmitter {
                 // sandbox check
                 preload: path.join(__dirname, './pc_play_intro_preload.js'),
                 devTools: false,
-                nodeIntegration: true,
+                nodeIntegration: false,
+                contextIsolation: true,
             },
             // fullscreen: fullscreenMode,
             // titleBarStyle: 'hidden',

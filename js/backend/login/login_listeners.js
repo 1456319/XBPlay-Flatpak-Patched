@@ -1,4 +1,13 @@
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, contextBridge } = require('electron')
+
+contextBridge.exposeInMainWorld('loginAPI', {
+    send: (channel, data) => {
+        let validChannels = ['msal', 'close-login', 'hide-overlay-popup'];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.send(channel, data);
+        }
+    }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
    console.warn('preload DOMContentLoaded')
@@ -8,6 +17,8 @@ window.addEventListener('showLoadingOverlay', () => {
    showLoadingOverlay()
 })
 
+// These listeners allow the preload to catch events from the Main World (web page)
+// and relay them to the Main Process, even when contextIsolation is enabled.
 window.addEventListener('msal', (event) => {
    console.warn('Found Token')
    ipcRenderer.send('msal', event.detail)
@@ -52,9 +63,7 @@ function showCloseButton() {
 
       // 3. Add event handler
       button.addEventListener ("click", function() {
-         window.dispatchEvent(new CustomEvent("close-login", {
-            detail: { data: true }
-         }));
+         ipcRenderer.send('close-login', { data: true });
       });
 
    } catch (err){

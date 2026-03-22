@@ -1,89 +1,49 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, contextBridge } = require('electron');
 
-// RECEIVES DATA FROM RENDER, SENDS TO FRONTEND
-ipcRenderer.on('load_saved_hosts', (event, data) => {
-    window.dispatchEvent(new CustomEvent('load_saved_hosts', {
-        detail: data
-    }));
-});
-
-ipcRenderer.on('update_pc_play_installed_text', (event, data) => {
-    window.dispatchEvent(new CustomEvent('update_pc_play_installed_text', {
-        detail: data
-    }));
-});
-
-ipcRenderer.on('show_toast', (event, data) => {
-    window.dispatchEvent(new CustomEvent('show_toast', {
-        detail: data
-    }));
-});
-
-ipcRenderer.on('set_loading_visibility', (event, data) => {
-    window.dispatchEvent(new CustomEvent('set_loading_visibility', {
-        detail: data
-    }));
-});
-ipcRenderer.on('download_percent', (event, data) => {
-    window.dispatchEvent(new CustomEvent('download_percent', {
-        detail: data
-    }));
+contextBridge.exposeInMainWorld('pcPlayAPI', {
+    send: (channel, data) => {
+        let validChannels = [
+            'close_app', 'host_list_apps', 'host_open_client', 'host_added',
+            'host_search', 'host_delete', 'host_connect', 'start_stream',
+            'close_pc_play', 'close_pc_play_title_picker', 'configure_client',
+            'uninstall_client', 'settings_items_updated'
+        ];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.send(channel, data);
+        }
+    },
+    on: (channel, func) => {
+        let validChannels = [
+            'load_saved_hosts', 'update_pc_play_installed_text', 'show_toast',
+            'set_loading_visibility', 'download_percent', 'load_app_list', 'close_app'
+        ];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.on(channel, (event, ...args) => func(...args));
+        }
+    }
 });
 
-ipcRenderer.on('load_app_list', (event, data) => {
-    window.dispatchEvent(new CustomEvent('load_app_list', {
-        detail: data
-    }));
-});
-ipcRenderer.on('close_app', (event, data) => {
-    ipcRenderer.send('close_app', data)
-});
+// These listeners allow the preload to catch events from the Main World (web page)
+// and relay them to the Main Process, even when contextIsolation is enabled.
+window.addEventListener('host_list_apps', (e) => ipcRenderer.send('host_list_apps', e.detail));
+window.addEventListener('host_open_client', (e) => ipcRenderer.send('host_open_client', e.detail));
+window.addEventListener('host_added', (e) => ipcRenderer.send('host_added', e.detail));
+window.addEventListener('host_search', (e) => ipcRenderer.send('host_search', e.detail));
+window.addEventListener('host_delete', (e) => ipcRenderer.send('host_delete', e.detail));
+window.addEventListener('host_connect', (e) => ipcRenderer.send('host_connect', e.detail));
+window.addEventListener('start_stream', (e) => ipcRenderer.send('start_stream', e.detail));
+window.addEventListener('close_pc_play', (e) => ipcRenderer.send('close_pc_play', e.detail));
+window.addEventListener('close_pc_play_title_picker', (e) => ipcRenderer.send('close_pc_play_title_picker', e.detail));
+window.addEventListener('configure_client', (e) => ipcRenderer.send('configure_client', e.detail));
+window.addEventListener('uninstall_client', (e) => ipcRenderer.send('uninstall_client', e.detail));
+window.addEventListener('settings_items_updated', (e) => ipcRenderer.send('settings_items_updated', e.detail));
 
-// BELOW SENDS DATA TO RENDERER FROM FRONTEND
-window.addEventListener('host_list_apps', (event) => {
-    console.log('host_list_apps', event.detail)
-    ipcRenderer.send('host_list_apps', event.detail)
-})
-window.addEventListener('host_open_client', (event) => {
-    console.log('host_open_client', event.detail)
-    ipcRenderer.send('host_open_client', event.detail)
-})
-window.addEventListener('host_added', (event) => {
-    console.log('host_added', event.detail)
-    ipcRenderer.send('host_added', event.detail)
-})
-window.addEventListener('host_search', (event) => {
-    console.log('host_search', event.detail)
-    ipcRenderer.send('host_search', event.detail)
-})
-window.addEventListener('host_delete', (event) => {
-    console.log('host_delete', event.detail)
-    ipcRenderer.send('host_delete', event.detail)
-})
-window.addEventListener('host_connect', (event) => {
-    console.log('host_connect', event.detail)
-    ipcRenderer.send('host_connect', event.detail)
-})
-window.addEventListener('start_stream', (event) => {
-    console.log('start_stream', event.detail)
-    ipcRenderer.send('start_stream', event.detail)
-})
-window.addEventListener('close_pc_play', (event) => {
-    console.log('close_pc_play', event.detail)
-    ipcRenderer.send('close_pc_play', event.detail)
-})
-window.addEventListener('close_pc_play_title_picker', (event) => {
-    console.log('close_pc_play_title_picker', event.detail)
-    ipcRenderer.send('close_pc_play_title_picker', event.detail)
-})
-window.addEventListener('configure_client', (event) => {
-    console.log('configure_client', event.detail)
-    ipcRenderer.send('configure_client', event.detail)
-})
-window.addEventListener('uninstall_client', (event) => {
-    console.log('uninstall_client', event.detail)
-    ipcRenderer.send('uninstall_client', event.detail)
-})
-window.addEventListener('settings_items_updated', (event) => {
-    ipcRenderer.send('settings_items_updated', event.detail)
-})
+// Re-dispatch IPC events as DOM events for Main World compatibility
+const forwardToMainWorld = (channel) => {
+    ipcRenderer.on(channel, (event, data) => {
+        window.dispatchEvent(new CustomEvent(channel, { detail: data }));
+    });
+};
+
+['load_saved_hosts', 'update_pc_play_installed_text', 'show_toast',
+ 'set_loading_visibility', 'download_percent', 'load_app_list', 'close_app'].forEach(forwardToMainWorld);

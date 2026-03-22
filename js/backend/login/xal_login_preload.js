@@ -1,9 +1,32 @@
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, contextBridge } = require('electron')
+
+contextBridge.exposeInMainWorld('xalLoginAPI', {
+    send: (channel, data) => {
+        let validChannels = ['close-login', 'manual_login_clicked', 'tokens_received'];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.send(channel, data);
+        }
+    }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
    if (!window.location.href.includes('/steam/login/login_page.html')){
       showCloseButton()
    }
+});
+
+// These listeners allow the preload to catch events from the Main World (web page)
+// and relay them to the Main Process, even when contextIsolation is enabled.
+window.addEventListener('login_clicked', () => {
+   ipcRenderer.send('manual_login_clicked')
+});
+
+window.addEventListener('close', () => {
+   ipcRenderer.send('close-login')
+});
+
+window.addEventListener('tokens_received', (event) => {
+   ipcRenderer.send('tokens_received', event.detail)
 });
 
 function showCloseButton() {
@@ -24,17 +47,3 @@ function showCloseButton() {
       console.error(err)
    }
 }
-
-
-// for steam QR code login page
-window.addEventListener('login_clicked', () => {
-   ipcRenderer.send('manual_login_clicked')
-});
-
-window.addEventListener('close', () => {
-   ipcRenderer.send('close-login')
-});
-
-window.addEventListener('tokens_received', (event) => {
-   ipcRenderer.send('tokens_received', event.detail)
-});

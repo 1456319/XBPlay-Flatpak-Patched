@@ -49,7 +49,8 @@ module.exports = class PopupClient {
 					// sandbox check
 					preload: path.join(__dirname, 'popup_preload.js'),
 					devTools: this.useDev,
-					// nodeIntegration: true
+					nodeIntegration: false,
+					contextIsolation: true,
 				},
 				fullscreen: false,
 				// titleBarStyle: 'hidden',
