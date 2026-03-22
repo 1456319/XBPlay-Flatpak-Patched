@@ -817,13 +817,13 @@ async function pcheck(force = false){
 
 function runGameTimer(delay){
     clearInterval(trailTimerInterval)
-    trailTimerInterval = setInterval(async ()=>{
-        console.log('Running game timer')
-        if (!persistClient.get('pcheck')){
-            showTrialWarning = true
-            await createMainWindow(false)
-        }
-    }, delay)
+    // trailTimerInterval = setInterval(async ()=>{
+    //     console.log('Running game timer')
+    //     if (!persistClient.get('pcheck')){
+    //         showTrialWarning = false
+    //         await createMainWindow(false)
+    //     }
+    // }, delay)
 }
 
 function show_gpu_settings(){
