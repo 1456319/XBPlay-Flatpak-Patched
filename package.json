@@ -27,5 +27,11 @@
     "steam-binary-vdf": "^0.1.0",
     "tar": "^7.0.1",
     "xbox-xcloud-player": "^0.2.11"
+  },
+  "scripts": {
+    "build:generate-sources": "node ./flatpak/flatpak-builder-tools/node/flatpak-node-generator.js -r npm package-lock.json",
+    "package-flatpak": "rm -rf .flatpak-builder/build && rm -rf archives/build && flatpak-builder --force-clean archives/build flatpak/net.studio08.xbplay.yml",
+    "upload-flatpak": "echo 'uploading...'",
+    "dist-all": "echo 'building...'"
   }
 }
