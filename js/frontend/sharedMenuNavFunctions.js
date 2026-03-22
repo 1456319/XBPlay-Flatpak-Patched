@@ -206,7 +206,11 @@ function simulateBack(){
     const maxIndex = (elements.length > 0) ? elements.length - 1 : 0
     if(!elements[maxIndex]){
         // emit back press for pc_play screen
-        window.dispatchEvent(new Event("close_pc_play"));
+        if (window.electronAPI) {
+            window.electronAPI.send("close_pc_play");
+        } else if (window.pcPlayAPI) {
+            window.pcPlayAPI.send("close_pc_play");
+        }
         return;
     }
 

@@ -328,6 +328,8 @@ module.exports = class XalLoginClient extends EventEmitter {
             webPreferences: {
                 session: loginSession, // Use the new session
                 preload: path.join(__dirname, './xal_login_preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
             }
         })
 

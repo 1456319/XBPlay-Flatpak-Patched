@@ -12,14 +12,16 @@
   <body>
     <div id="videoHolder"></div>
     <script>
-        const { ipcRenderer } = require('electron');
-
         // Capture logs
         console.log = function(...args) {
-            ipcRenderer.send('custom_log', args);
+            if (window.electronAPI) {
+                window.electronAPI.send('custom_log', args);
+            }
         };
         console.error = function(...args) {
-            ipcRenderer.send('custom_log', args);
+            if (window.electronAPI) {
+                window.electronAPI.send('custom_log', args);
+            }
         };
 
         // Initialize xCloudPlayer
@@ -93,7 +95,9 @@
         });
 
         window.addEventListener('quitGame', () => {
-            ipcRenderer.send('quitGame');
+            if (window.electronAPI) {
+                window.electronAPI.send('quitGame');
+            }
         });
 
     </script>

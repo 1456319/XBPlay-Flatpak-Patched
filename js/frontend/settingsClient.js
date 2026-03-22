@@ -70,12 +70,12 @@ const SettingsClient = {
         console.log('saved settings', this.id, this.getSavedSettingsValues())
 
         // update main render with new settings data
-        window.dispatchEvent(new CustomEvent("settings_items_updated", {
-            detail: {
+        if (window.electronAPI) {
+            window.electronAPI.send("settings_items_updated", {
                 settingsKeyName: this.settingsValueToSettingsKey(settingsKeyName),
                 values: values
-            }
-        }));
+            });
+        }
     },
 
     getSavedSettingsValues: function() {

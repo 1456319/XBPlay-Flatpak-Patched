@@ -30,23 +30,23 @@ async function showAlert(options, id){
 					    // alertify.success(options['buttons'][0]);
 						console.log('alertify', 'Button 0 pressed')
 
-					    window.dispatchEvent(new CustomEvent("alertify", {
-			                detail: {
-								response: 0,
-								id: alertId
-							}
-			          	}));
+					    if (window.popupAPI) {
+                            window.popupAPI.send("alertify_confirm", {
+                                response: 0,
+                                id: alertId
+                            });
+                        }
 					 },
 					function(){
 					    // alertify.error(options['buttons'][1]);
 						console.log('alertify', 'Button 1 pressed')
 
-					    window.dispatchEvent(new CustomEvent("alertify", {
-			                detail: {
-								response: 1,
-								id: alertId
-							}
-			        	}));
+					    if (window.popupAPI) {
+                            window.popupAPI.send("alertify_confirm", {
+                                response: 1,
+                                id: alertId
+                            });
+                        }
 					}
 				).setting({
 					'labels': { ok: button1, cancel: button2 },
@@ -71,12 +71,12 @@ async function showAlert(options, id){
 					function(){
 					    // alertify.success(okButton);
 
-					    window.dispatchEvent(new CustomEvent("alertify", {
-			                detail: {
-								response: 0,
-								id: alertId
-							}
-			          	}));
+					    if (window.popupAPI) {
+                            window.popupAPI.send("alertify_confirm", {
+                                response: 0,
+                                id: alertId
+                            });
+                        }
 					 },
 				).setting({
 					'closable': false,
@@ -101,9 +101,11 @@ window.addEventListener('keydown', function escKeyListener(event) {
 		console.log('Escape key pressed!')
 
 		// send the cancel event with canceled: true. This happens before oncancel above due to the timeout
-		window.dispatchEvent(new CustomEvent("alertify", {
-			detail: { response: 1, canceled: true, id: alertId} // CANCEL BUTTON IS ALWAYS THE 2ND BUTTON (1)
-		}));
+		if (window.popupAPI) {
+            window.popupAPI.send("alertify_confirm", {
+                response: 1, canceled: true, id: alertId // CANCEL BUTTON IS ALWAYS THE 2ND BUTTON (1)
+            });
+        }
 	}
 });
 
@@ -153,19 +155,25 @@ function simulateClick(isA){
 	console.log('simulate click')
 	if (isA){
 		if (document.activeElement.classList.contains('ajs-ok')) {
-			window.dispatchEvent(new CustomEvent("alertify", {
-	            detail: { response: 0, id: alertId} // OK button is always first index
-	      	}));
+			if (window.popupAPI) {
+                window.popupAPI.send("alertify_confirm", {
+                    response: 0, id: alertId // OK button is always first index
+                });
+            }
 		} else {
-			window.dispatchEvent(new CustomEvent("alertify", {
-	            detail: { response: 1, id: alertId}
-	      	}));
+			if (window.popupAPI) {
+                window.popupAPI.send("alertify_confirm", {
+                    response: 1, id: alertId
+                });
+            }
 		}
 	} else { // back button send no data
 			console.log('sending cancel command')
-			window.dispatchEvent(new CustomEvent("alertify", {
-	            detail: { response: 1, canceled: true, id: alertId} // CANCEL BUTTON IS ALWAYS THE 2ND BUTTON (1)
-	      	}));
+			if (window.popupAPI) {
+                window.popupAPI.send("alertify_confirm", {
+                    response: 1, canceled: true, id: alertId // CANCEL BUTTON IS ALWAYS THE 2ND BUTTON (1)
+                });
+            }
 	}
 }
 

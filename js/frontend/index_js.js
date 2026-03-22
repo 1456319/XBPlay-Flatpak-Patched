@@ -31,11 +31,9 @@ async function handleLanguageChange(){
     await TranslateClient.TranslatePageBruteForce('main_menu_steam.json')
 
     // send update to render process
-    window.dispatchEvent(new CustomEvent("ui_language_update", {
-        detail: {
-            data: TranslateClient.desiredLanguage
-        }
-    }));
+    if (window.electronAPI) {
+        window.electronAPI.send("ui_language_update", TranslateClient.desiredLanguage);
+    }
 }
 window.addEventListener('load', async function() {
     console.log('page load')
@@ -137,10 +135,14 @@ function setupCheckbox(){
     checkbox.addEventListener('change', function() {
         if (this.checked) {
             console.log("Checkbox is checked..");
-            window.dispatchEvent(new Event("auto_login_enable"));
+            if (window.electronAPI) {
+                window.electronAPI.send('auto_login_toggle', {is_set: 1})
+            }
         } else {
             console.log("Checkbox is not checked..");
-            window.dispatchEvent(new Event("auto_login_disable"));
+            if (window.electronAPI) {
+                window.electronAPI.send('auto_login_toggle', {is_set: 0})
+            }
         }
     });
 }
@@ -162,20 +164,22 @@ function disableSplash(){
 
 function setupCloseButton(){
     document.getElementById('close_btn').addEventListener("click", () => {
-        window.dispatchEvent(new Event("close_app"));
+        if (window.electronAPI) {
+            window.electronAPI.send("close_app", {});
+        }
     });
 }
 
 function downloadXCloudArtwork(){
-    window.dispatchEvent(new CustomEvent("downloadXCloudArtwork", {
-        detail: {}
-    }));
+    if (window.electronAPI) {
+        window.electronAPI.send("downloadXCloudArtwork", {});
+    }
 }
 
 function showGPUSettings(){
-    window.dispatchEvent(new CustomEvent("show_gpu_settings", {
-        detail: {}
-    }));
+    if (window.electronAPI) {
+        window.electronAPI.send("show_gpu_settings", {});
+    }
 }
 
 function showToast(message, isSuccess = true){

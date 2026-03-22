@@ -98,8 +98,9 @@ module.exports = class LoginWindowClient extends EventEmitter {
             webPreferences: {
                 // sandbox check
                 preload: path.join(__dirname, './login_listeners.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
                 // devTools: true,
-                // nodeIntegration: true
             }
         })
 
@@ -330,6 +331,14 @@ module.exports = class LoginWindowClient extends EventEmitter {
             function handlePrefillKey() {
                 const prefilledKey = localStorage.getItem('prefilled_key');
 
+                if(typeof window.loginAPI === 'undefined') {
+                    window.loginAPI = {
+                        send: (channel, data) => {
+                            window.dispatchEvent(new CustomEvent(channel, { detail: data }));
+                        }
+                    };
+                }
+
                 try {
                     console.error('STARTING JS INJECTION: handlePrefillKey');
                     const prefillKeyField = document.querySelector('input[type="password"]');
@@ -426,6 +435,10 @@ module.exports = class LoginWindowClient extends EventEmitter {
                     } catch (err) {
                         console.log('Error', err);
                     }
+                }
+
+                if (result && window.loginAPI) {
+                    window.loginAPI.send('msal', result);
                 }
                 return result;
             }
