@@ -68,7 +68,7 @@ To recreate the flatpak packaging configuration successfully on a compatible ins
       - name: xbplay
         buildsystem: simple
         build-commands:
-          - npm run dist-all || true
+          - npm ci --offline && npm run dist-all
           - cp -r dist/linux-unpacked/* /app/
           - install -Dm755 flatpak/run.sh /app/bin/run.sh
         sources:
@@ -90,7 +90,7 @@ To recreate the flatpak packaging configuration successfully on a compatible ins
         "build:generate-sources": "node ./flatpak/flatpak-builder-tools/node/flatpak-node-generator.js -r npm package-lock.json",
         "package-flatpak": "rm -rf .flatpak-builder/build && rm -rf archives/build && flatpak-builder --force-clean archives/build flatpak/net.studio08.xbplay.yml",
         "upload-flatpak": "echo 'uploading...'",
-        "dist-all": "echo 'building...'"
+        "dist-all": "electron-builder --linux dir"
     }
 
     with open("package.json", "w") as f:

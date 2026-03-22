@@ -32,6 +32,6 @@
     "build:generate-sources": "node ./flatpak/flatpak-builder-tools/node/flatpak-node-generator.js -r npm package-lock.json",
     "package-flatpak": "rm -rf .flatpak-builder/build && rm -rf archives/build && flatpak-builder --force-clean archives/build flatpak/net.studio08.xbplay.yml",
     "upload-flatpak": "echo 'uploading...'",
-    "dist-all": "echo 'building...'"
+    "dist-all": "electron-builder --linux dir"
   }
 }
