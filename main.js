@@ -270,9 +270,7 @@ const createMainWindow = async (isPcPlay = false) => {
                 mainWindow.webContents.executeJavaScript(`
                     try {
                         SteamOSKeyboardFix.DisableInputFields();
-                    } catch (err){
-                        console.log('Error', err)
-                    }
+                    } catch (err){}
                 `)
             }
         } else { // setup streaming screens
@@ -345,9 +343,7 @@ const createMainWindow = async (isPcPlay = false) => {
                     
                     // always start the stream right away
                     connectButtonAction();
-                } catch (err){
-                    console.log('Error', err)
-                }
+                } catch (err){}
             `)
         }
 
