@@ -269,3 +269,4 @@ If MCP doesn't work with your Brave setup, we can do **guided manual capture:**
 5. ✅ `MCP_SETUP_GUIDE.md` - This file
 
 **Next:** Actual data capture to fill the gaps
+

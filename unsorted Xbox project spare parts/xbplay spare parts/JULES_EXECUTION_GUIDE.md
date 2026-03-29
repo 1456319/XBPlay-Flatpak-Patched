@@ -284,11 +284,10 @@ done
 # 5. Test locally
 npm run build
 npm test
-npm run lint
 
 # 6. Commit batch
 git add .
-git commit -m "feat: implement tasks t001-t005 (Jules sessions)"
+git commit -m "feat: project setup (tasks t001-t005)"
 
 # 7. Launch next batch (t006-t010)
 # ... repeat process

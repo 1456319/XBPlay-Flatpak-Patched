@@ -304,27 +304,6 @@ jules new --parallel 3 "Create repo 1456319/xbplay-client with MIT license"
 
 ---
 
-## 📞 Communication
-
-### Status Updates (Recommended Frequency)
-- **Daily:** Check Jules sessions, pull completed work
-- **Every 5-10 tasks:** Run tests, commit batch
-- **Weekly:** Review progress vs plan, adjust timeline
-
-### When to Ask for Help
-- ❌ Jules failing 3+ times on same task
-- ❌ Tests breaking after Jules changes
-- ❌ Unclear what task to launch next
-- ❌ Legal concerns about code reuse
-
-### What to Tell Me
-- "Continue with next batch" → I'll query SQL and launch tasks
-- "Jules session X failed" → I'll help debug or break into sub-tasks
-- "Change of plans" → I'll adjust task list
-- "Show progress" → I'll query SQL and generate report
-
----
-
 **Current Status:** ⏸️ Planning complete, awaiting execution approval
 
 **Last Updated:** Ready to start  

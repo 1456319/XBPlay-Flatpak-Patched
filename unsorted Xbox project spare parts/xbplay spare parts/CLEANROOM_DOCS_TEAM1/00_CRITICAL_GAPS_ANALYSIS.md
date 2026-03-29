@@ -229,4 +229,190 @@ For implementing **codec preference logic** and **quality settings**:
 ### Recommended Capture Method
 **Chrome WebRTC Internals:**
 1. While streaming, check `chrome://webrtc-internals`
-2. Look for "codec"
+2. Look for "codec" field in stats
+3. Document: actualCodec, resolution, fps, bitrate
+4. Test different network conditions (throttle bandwidth)
+5. Document how quality adapts
+
+**Alternative: Extract from JavaScript**
+- Search for codec preference logic in `web-rtc-stream.*.chunk.js`
+- Document Microsoft's preferred codec order
+
+---
+
+## Gap #6: Error Codes & Recovery Procedures 🟡 MEDIUM PRIORITY
+
+### What's Missing
+The HAR file shows **successful** connection flow. Missing:
+
+**Error scenarios:**
+- What if authentication fails? (401, 403 errors)
+- What if console is offline? (Connection timeout)
+- What if session creation fails? (Server errors)
+- What if WebRTC connection fails? (ICE failure, DTLS handshake failure)
+- What if stream disconnects mid-session? (Network drop)
+
+**Error codes:**
+- HTTP status codes and their meanings
+- JSON error responses from Xbox Live APIs
+- WebSocket close codes
+- Session state error values
+
+### Why Team 2 Needs This
+**Robust error handling and user-friendly messages** require knowing:
+- All possible error states
+- Error messages to show users
+- Automatic retry logic
+- When to give up vs. keep retrying
+
+### Recommended Capture Method
+**Intentional failure testing:**
+1. **Test 1:** Start stream, then turn off Xbox console mid-stream → Capture disconnect behavior
+2. **Test 2:** Use expired/invalid token → Capture 401 error response
+3. **Test 3:** Try to connect to offline console → Capture timeout behavior
+4. **Test 4:** Disconnect network mid-stream → Capture reconnection attempts
+5. **Test 5:** Try to start second stream while one is active → Capture session conflict error
+
+---
+
+## Gap #7: Console Capabilities Discovery 🟢 LOW PRIORITY
+
+### What's Missing
+Different Xbox consoles have different capabilities:
+
+**Xbox One vs. Xbox Series X/S differences:**
+- Max resolution (1080p vs. 4K)
+- Max frame rate (60fps vs. 120fps)
+- HEVC support (Series X/S has hardware encoder)
+- HDR support
+- Quick Resume support
+
+**Missing data:**
+- How does client detect console model?
+- How does client query console capabilities?
+- Does server send capabilities in `/configuration` endpoint?
+
+### Why Team 2 Needs This (Eventually)
+For **optimal quality settings** and **UI features**:
+- Show "4K Available" badge for Series X/S
+- Auto-select HEVC for Series X/S
+- Don't offer 4K option for Xbox One
+
+### Recommended Capture Method
+**Check session configuration response:**
+```bash
+# Look for this in HAR:
+GET /v5/sessions/home/<SESSION_ID>/configuration
+```
+
+Response likely contains console model/capabilities. Document structure.
+
+---
+
+## Gap #8: Multi-Session Behavior 🟢 LOW PRIORITY
+
+### What's Missing
+- Can user have multiple streaming sessions simultaneously?
+- Can user switch between consoles?
+- What happens if user starts stream on second device?
+- Does first session terminate or show error?
+
+### Recommended Capture Method
+**Multi-device test:**
+1. Start stream on Device A (capture HAR)
+2. While streaming, start stream on Device B (capture HAR)
+3. Document behavior (error? force-disconnect?)
+
+---
+
+## Summary: What to Capture Next
+
+### 🔴 MUST HAVE (Blockers)
+1. **Console Discovery API** - Navigate to `/play/consoles`, capture API call
+2. **Console Wake/Power** - Test wake from standby, capture API
+3. **WebRTC DataChannel Messages** - Use Chrome WebRTC Internals + JS analysis
+4. **Input Protocol** - Extract from JavaScript, document format
+
+### 🟡 SHOULD HAVE (Important)
+5. **Codec Negotiation Results** - Chrome WebRTC Internals during stream
+6. **Error Scenarios** - Intentional failure testing (5 scenarios above)
+
+### 🟢 NICE TO HAVE (Enhancement)
+7. **Console Capabilities** - Check `/configuration` response
+8. **Multi-Session** - Test concurrent streams
+
+---
+
+## Recommended Capture Session Plan
+
+### Session 1: Console Discovery (30 minutes)
+1. Open DevTools Network tab
+2. Navigate to https://www.xbox.com/en-US/play/consoles
+3. Filter XHR/Fetch requests
+4. Find console list API call
+5. Save HAR + copy/paste API response
+6. **Goal:** Document console list endpoint and response format
+
+### Session 2: Power Management (30 minutes)
+1. Put Xbox in Standby mode
+2. Open DevTools Network tab
+3. Launch Remote Play session
+4. Capture wake request
+5. Save HAR file
+6. **Goal:** Document console wake endpoint
+
+### Session 3: Live Streaming Analysis (60 minutes)
+1. Open `chrome://webrtc-internals` in second tab
+2. Open DevTools Console in play.xbox.com tab
+3. Start Remote Play stream
+4. Press gamepad buttons while monitoring console
+5. Look for DataChannel send events
+6. Save WebRTC Internals dump
+7. Extract JavaScript modules from HAR
+8. **Goal:** Capture DataChannel activity + JS source for analysis
+
+### Session 4: Error Testing (45 minutes)
+1. Test 5 failure scenarios (see Gap #6)
+2. Capture HAR for each scenario
+3. Document error responses
+4. **Goal:** Complete error handling documentation
+
+---
+
+## Notes for Team 1 (Internal)
+
+### Data Sanitization Checklist
+When documenting captured data, **ALWAYS redact:**
+- ✅ XUID: `2535421847897820` → `<XUID>`
+- ✅ Console IDs: `F4000F644EF581F9` → `<CONSOLE_ID>`
+- ✅ OAuth tokens (JWT format)
+- ✅ Session IDs, AuthKeys, Nonces
+- ✅ IP addresses
+- ✅ Gamertag (if appears in responses)
+- ✅ MAC addresses (if in WoL packets)
+
+### Cleanroom Compliance
+When analyzing JavaScript:
+- ❌ Do NOT copy code verbatim
+- ❌ Do NOT copy variable names
+- ❌ Do NOT copy algorithm implementations
+- ✅ DO document: "Function X takes input Y and produces output Z"
+- ✅ DO document: "Protocol uses message format: {field1, field2, field3}"
+- ✅ DO provide example messages with sanitized data
+
+---
+
+## Status
+
+**Current HAR Analysis:** 60% complete  
+**Critical Gaps Identified:** 8  
+**High Priority Gaps:** 4  
+**Recommended Next Action:** Execute Capture Session 1 (Console Discovery)
+
+**Estimated Time to Fill Gaps:** 3-4 hours of focused capture + analysis
+
+Once gaps filled → Team 1 can produce **complete functional specifications** → Team 2 can implement **feature-complete client** without seeing Microsoft's code.
+
+---
+
+**END OF GAP ANALYSIS**

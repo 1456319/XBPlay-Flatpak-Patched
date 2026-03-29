@@ -22,7 +22,10 @@
   },
   "renderer_traces": {
     "132874": "strace: Process 132874 attached\nstrace: Process 132874 detached\n% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 63.28    0.033532        2794        12         2 futex\n 36.69    0.019442       19442         1         1 restart_syscall\n  0.02    0.000010           5         2           madvise\n  0.01    0.000006           6         1           sendto\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.052990        3311        16         3 total\n",
-    "139348": "strace: Process 139348 attached\nstrace: Process 139348 detached\n% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 92.81    0.000129           1        91        43 futex\n  4.32    0.000006           1         4           madvise\n  1.44    0.000002           2         1           sendto\n  1.44    0.000002           2         1         1 restart_syscall\n  0.00    0.000000           0         1           write\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.000139           1        98        44 total\n"
+    "137623": "strace: Process 137623 attached\nstrace: Process 137623 detached\n",
+    "137769": "strace: Process 137769 attached\nstrace: Process 137769 detached\n",
+    "139348": "strace: Process 139348 attached\nstrace: Process 139348 detached\n% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 92.81    0.000129           1        91        43 futex\n  4.32    0.000006           1         4           madvise\n  1.44    0.000002           2         1           sendto\n  1.44    0.000002           2         1         1 restart_syscall\n  0.00    0.000000           0         1           write\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.000139           1        98        44 total\n",
+    "139422": "strace: Process 139422 attached\nstrace: Process 139422 detached\n"
   },
   "resources": {
     "har_file": "fullloginstillstuck.har",
@@ -30,6 +33,101 @@
       {
         "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
         "time_ms": 1.0629999960656278,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 5.675000000337604,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 2.6140000045415945,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 1.410999997460749,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 6.01499999902444,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 2.268000003823545,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 1.171999996586237,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 6.669999995210674,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 2.9100000028847717,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 1.1119999981019646,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 6.706000000122003,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 2.812999999150634,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 0.94600000011269,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 8.583999995607883,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 3.9909999977680854,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 0.12200000492157415,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 7.814999997208361,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 3.112999998847954,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 0.29399999766610563,
+        "status": 0
+      },
+      {
+        "url": "https://chat.xboxlive.com/users/xuid(2535421847897820)/chat/auth",
+        "time_ms": 7.015999995928723,
         "status": 0
       }
     ]
