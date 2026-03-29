@@ -161,32 +161,28 @@ def main():
     save_report(cdp_info, f"cdp_info_{int(time.time())}.json")
     
     # 4. System call trace
-    print("[4/7] Sampling system calls (5 seconds)...")
-    strace_data = strace_sample()
-    save_report(strace_data, f"strace_sample_{int(time.time())}.txt")
+    print("[4/7] Gathering system call trace...")
+    strace_output = strace_sample()
+    save_report(strace_output, f"strace_sample_{int(time.time())}.txt")
     
-    # 5. Stack trace with GDB
-    print("[5/7] Getting stack trace with GDB...")
-    gdb_data = gdb_backtrace()
-    save_report(gdb_data, f"gdb_backtrace_{int(time.time())}.txt")
+    # 5. GDB Backtrace
+    print("[5/7] Gathering GDB backtrace...")
+    backtrace = gdb_backtrace()
+    save_report(backtrace, f"gdb_backtrace_{int(time.time())}.txt")
     
-    # 6. Check for JavaScript errors in Chrome log
-    print("[6/7] Checking Chrome logs...")
-    chrome_log = run_cmd("find ~/.config/google-chrome-for-testing -name 'chrome_debug.log' -exec tail -500 {} \\; 2>/dev/null")
-    save_report(chrome_log, f"chrome_log_{int(time.time())}.txt")
-    
-    # 7. Memory maps
-    print("[7/7] Analyzing memory...")
+    # 6. Smaps (memory info)
+    print("[6/7] Gathering memory info (smaps)...")
     chrome_pid = run_cmd("pgrep -f 'selenium/chrome' | head -1").strip()
     if chrome_pid:
-        smaps = run_cmd(f"cat /proc/{chrome_pid}/smaps 2>/dev/null | head -200")
+        smaps = run_cmd(f"cat /proc/{chrome_pid}/smaps | head -1000")
         save_report(smaps, f"smaps_{int(time.time())}.txt")
     
-    print()
-    print("=" * 80)
-    print("Diagnostic collection complete!")
-    print(f"All files saved to: {OUTPUT_DIR}")
-    print("=" * 80)
+    # 7. Chrome Logs
+    print("[7/7] Gathering Chrome logs...")
+    chrome_logs = run_cmd("cat /tmp/chrome_debug.log | tail -500")
+    save_report(chrome_logs, f"chrome_log_{int(time.time())}.txt")
+    
+    print("\nDiagnostic complete.")
 
 if __name__ == "__main__":
     main()
