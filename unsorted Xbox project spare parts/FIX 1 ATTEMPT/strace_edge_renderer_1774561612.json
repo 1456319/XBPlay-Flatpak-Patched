@@ -1,0 +1,3 @@
+{
+  "summary": "strace: Process 1445831 attached\nstrace: Process 1445831 detached\n% time     seconds  usecs/call     calls    errors syscall\n------ ----------- ----------- --------- --------- ----------------\n 84.12    0.007694           3      2172       103 futex\n  5.18    0.000474           3       134           write\n  4.99    0.000456           3       127           getrandom\n  4.70    0.000430           3       113           poll\n  0.92    0.000084           3        25           recvmsg\n  0.09    0.000008           4         2           read\n------ ----------- ----------- --------- --------- ----------------\n100.00    0.009146           3      2573       103 total\n"
+}

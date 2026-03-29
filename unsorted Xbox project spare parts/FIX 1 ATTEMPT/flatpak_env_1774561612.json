@@ -1,0 +1,5 @@
+{
+  "info": "ID: com.microsoft.Edge\nRef: app/com.microsoft.Edge/x86_64/stable\nArch: x86_64\nBranch: stable\nVersion: 133.0.3065.69\nLicense: Proprietary\nOrigin: flathub\nCollection: org.flathub.Stable\nInstallation: user\nInstalled: 535.4\u00a0MB\nRuntime: org.freedesktop.Platform/x86_64/24.08\nSdk: org.freedesktop.Sdk/x86_64/24.08\n\nCommit: f8346e271c4c956972740277341880d97134\nParent: 58d20f031b66434aaf43341880d97134\nSubject: Update com.microsoft.Edge to 133.0.3065.69 (75c1e577)\nDate: 2025-02-21 15:43:34 +0000\n",
+  "ps": "Instance   PID     Application         Runtime\n3860533519 1445763 com.microsoft.Edge org.freedesktop.Platform\n",
+  "overrides": "[Context]\nshared=network;ipc;\nsockets=x11;wayland;pulseaudio;ssh-auth;\ndevices=all;\nfilesystems=xdg-download;xdg-run/pipewire-0;~/.local/share/fonts:ro;~/.fonts:ro;\n\n[Environment]\nALSA_CONFIG_PATH=/usr/share/alsa/alsa-flatpak.conf\n"
+}
