@@ -326,6 +326,7 @@ module.exports = class XalLoginClient extends EventEmitter {
             title: 'Login',
             titleBarStyle: 'hidden',
             webPreferences: {
+                sandbox: true,
                 session: loginSession, // Use the new session
                 preload: path.join(__dirname, './xal_login_preload.js'),
                 nodeIntegration: false,

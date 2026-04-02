@@ -197,6 +197,7 @@ const createMainWindow = async (isPcPlay = false) => {
         frame: false,
         webPreferences: {
             // sandbox check
+            sandbox: true,
             preload: path.join(__dirname, preloadPath),
             devTools: useDev,
             nodeIntegration: false,
@@ -848,6 +849,7 @@ function show_gpu_settings(){
         width: 1000,
         height: 800,
         webPreferences: {
+            sandbox: true,
             nodeIntegration: false,
             contextIsolation: true,
         }
