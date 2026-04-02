@@ -161,18 +161,24 @@ async function showDialog(options, disableHomeScreenControls = true){
             if(disableHomeScreenControls) {
                 try {
                     await mainWindow.webContents.executeJavaScript(`setControls(0)`);
-                } catch(err){}
+                } catch(err){
+                    console.error('Error in showDialog logic:', err);
+                }
             }
 
             let result = false
             try {
                 result = await popupClient.showPopup(options, this.parentWindow)
-            } catch (err){}
+            } catch (err){
+                console.error('Error in showDialog logic:', err);
+            }
 
             if(disableHomeScreenControls) {
                 try {
                     await mainWindow.webContents.executeJavaScript(`setControls(1)`);
-                } catch (err){}
+                } catch (err){
+                    console.error('Error in showDialog logic:', err);
+                }
             }
             setTimeout(() => {
                 return resolve(result);
@@ -291,7 +297,9 @@ const createMainWindow = async (isPcPlay = false) => {
                 mainWindow.webContents.executeJavaScript(`
                     try {
                         SteamOSKeyboardFix.DisableInputFields();
-                    } catch (err){}
+                    } catch (err){
+                        console.error('Error in SteamOSKeyboardFix.DisableInputFields():', err);
+                    }
                 `)
             }
         } else { // setup streaming screens
@@ -364,7 +372,9 @@ const createMainWindow = async (isPcPlay = false) => {
                     
                     // always start the stream right away
                     connectButtonAction();
-                } catch (err){}
+                } catch (err){
+                    console.error('Error in UI initialization script:', err);
+                }
             `)
         }
 
@@ -454,7 +464,9 @@ function setFullScreen(enabled){
                 persistClient.save('fullscreenPopupCounter', +showedShortcut + 1)
                 mainWindow.webContents.executeJavaScript(`showToast('Use F10 or F11 to toggle fullscreen', false);`)
             }
-        } catch (err){}
+        } catch (err){
+            console.error('Error in setFullScreen toast:', err);
+        }
     }
 }
 
