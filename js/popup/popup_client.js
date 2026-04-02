@@ -47,6 +47,7 @@ module.exports = class PopupClient {
 				alwaysOnTop: true,
 				webPreferences: {
 					// sandbox check
+					sandbox: true,
 					preload: path.join(__dirname, 'popup_preload.js'),
 					devTools: this.useDev,
 					nodeIntegration: false,

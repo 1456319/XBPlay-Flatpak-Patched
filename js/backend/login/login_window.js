@@ -97,6 +97,7 @@ module.exports = class LoginWindowClient extends EventEmitter {
             titleBarStyle: 'hidden',
             webPreferences: {
                 // sandbox check
+                sandbox: true,
                 preload: path.join(__dirname, './login_listeners.js'),
                 nodeIntegration: false,
                 contextIsolation: true,

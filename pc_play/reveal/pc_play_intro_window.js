@@ -25,6 +25,7 @@ module.exports = class PCPlayIntroWindow extends EventEmitter {
             frame: true,
             webPreferences: {
                 // sandbox check
+                sandbox: true,
                 preload: path.join(__dirname, './pc_play_intro_preload.js'),
                 devTools: false,
                 nodeIntegration: false,
